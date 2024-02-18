@@ -29,7 +29,7 @@ Para acompanhar este workshop, é necessário ter conhecimento básico de:
 
 1. Clone este repositório em sua máquina local:
 
-git clone <url_do_repositorio>
+git clone [<url_do_repositorio>](https://github.com/aleantoniolli/workshop-medway-react-query.git)
 
 2. Acesse o diretório do projeto:
 
