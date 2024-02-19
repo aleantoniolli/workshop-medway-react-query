@@ -1,12 +1,18 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useUserData } from "../hooks-queries";
+import { useMutationUserData, useUserData } from "../hooks-queries";
 
 const AvatarChildren = () => {
   let { username } = useParams();
-
   const { data: userData } = useUserData(username);
+  const mutation = useMutationUserData();
+
   if (!userData) return null;
+
+  const handleMutation = () => {
+    mutation.mutate({ username: username });
+  };
+
   return (
     <div
       key={userData.id}
@@ -26,6 +32,9 @@ const AvatarChildren = () => {
           marginRight: "10px",
         }}
       />
+      <button onClick={handleMutation} disabled={mutation?.isPending}>
+        {mutation?.isPending ? "Carregando..." : "Change image"}
+      </button>
     </div>
   );
 };

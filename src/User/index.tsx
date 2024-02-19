@@ -23,7 +23,25 @@ const User = () => {
   return (
     <div>
       {isFetching ? <span> Loading...</span> : null}{" "}
-      <h1>GitHub Followers of {username}</h1>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          marginBottom: "10px",
+        }}
+      >
+        <h1>GitHub Followers of {username}</h1>
+        <img
+          src={userData.avatar_url}
+          alt={userData.login}
+          style={{
+            width: "50px",
+            height: "50px",
+            borderRadius: "50%",
+            marginLeft: "10px",
+          }}
+        />
+      </div>
       <p>Total Followers: {totalFollowers}</p>
       <p>Total following: {totalFollowing}</p>
       <button
