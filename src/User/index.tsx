@@ -18,7 +18,11 @@ const User = () => {
 
   if (isLoading) return "Loading...";
 
-  if (error) return "An error has occurred: " + error.message;
+  if (error)
+    return (
+      "An error has occurred: " + error?.response?.data?.message ||
+      error?.message
+    );
 
   return (
     <div>
@@ -58,7 +62,6 @@ const User = () => {
             style={{ textDecoration: "none", color: "inherit" }}
           >
             <div
-              key={follower.id}
               style={{
                 display: "flex",
                 alignItems: "center",

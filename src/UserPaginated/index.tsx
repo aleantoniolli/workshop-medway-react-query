@@ -39,10 +39,13 @@ const UserPaginated = () => {
       });
     }
   };
-  console.log("error.message", error?.response);
   if (isLoading) return "Loading...";
 
-  if (error) return "An error has occurred: " + error.message;
+  if (error)
+    return (
+      "An error has occurred: " + error?.response?.data?.message ||
+      error?.message
+    );
 
   return (
     <div>
