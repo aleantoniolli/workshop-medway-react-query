@@ -1,13 +1,23 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useUserData, useUserFollowers } from "../hooks-queries";
+import { useQueryClient } from "@tanstack/react-query";
+
+async function fetchFollowers(page = 1, username: string) {
+  const { data } = await axios.get(
+    `https://api.github.com/users/${username}/followers?page=${page}`
+  );
+  return data;
+}
 
 const UserPaginated = () => {
   let { username } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
+  const queryClient = useQueryClient();
   const page = Number(searchParams?.get("page") || "1");
   const [enableQueries, setEnableQueries] = useState(true);
-
+  const [enablePrefetch, setEnablePrefetch] = useState(false);
   const { isLoading, error, data, isFetching, isPlaceholderData } =
     useUserFollowers(username, page, enableQueries);
 
@@ -20,6 +30,16 @@ const UserPaginated = () => {
   const totalFollowers = userData?.followers;
   const totalFollowing = userData?.following;
 
+  const prefetch = async () => {
+    if (!isPlaceholderData && data?.length > 0) {
+      await queryClient.prefetchQuery({
+        queryKey: ["followers", username, page + 1],
+        queryFn: () => fetchFollowers(page + 1, username || ""),
+        staleTime: 300000, //5 minutes
+      });
+    }
+  };
+  console.log("error.message", error?.response);
   if (isLoading) return "Loading...";
 
   if (error) return "An error has occurred: " + error.message;
@@ -36,6 +56,12 @@ const UserPaginated = () => {
       >
         {enableQueries ? "Disabled Queries" : "Enable Queries"}
       </button>
+      <button
+        onClick={() => setEnablePrefetch(!enablePrefetch)}
+        style={{ marginBottom: "15px" }}
+      >
+        {enablePrefetch ? "Disabled Prefetch" : "Enable Prefetch"}
+      </button>
       <div>
         {data?.map((follower) => (
           <Link
@@ -44,7 +70,6 @@ const UserPaginated = () => {
             style={{ textDecoration: "none", color: "inherit" }}
           >
             <div
-              key={follower.id}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -74,6 +99,7 @@ const UserPaginated = () => {
         Previous Page
       </button>{" "}
       <button
+        onMouseEnter={enablePrefetch ? prefetch : undefined}
         onClick={() => setPage(String(data?.length > 0 ? page + 1 : page))}
         disabled={isPlaceholderData || !(data?.length > 0)}
       >
