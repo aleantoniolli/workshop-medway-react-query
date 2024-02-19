@@ -10,7 +10,6 @@ const useUserData = (username?: string, enableQueries = true) => {
   return useQuery({
     queryKey: ["userData", username],
     queryFn: () => fetchUserData(username),
-    staleTime: 10000,
     enabled: enableQueries,
   });
 };

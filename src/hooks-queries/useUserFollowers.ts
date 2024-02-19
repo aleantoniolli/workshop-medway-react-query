@@ -17,7 +17,6 @@ const useUserFollowers = (
   return useQuery({
     queryKey: ["userFollowers", username, page],
     queryFn: () => fetchUserFollowers(username),
-    staleTime: 10000,
     enabled: enableQueries,
   });
 };
