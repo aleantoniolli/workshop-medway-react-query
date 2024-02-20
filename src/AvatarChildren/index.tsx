@@ -15,7 +15,7 @@ const AvatarChildren = () => {
 
   return (
     <div
-      key={userData.id}
+      key={userData?.id}
       style={{
         display: "flex",
         alignItems: "center",
@@ -23,8 +23,8 @@ const AvatarChildren = () => {
       }}
     >
       <img
-        src={userData.avatar_url}
-        alt={userData.login}
+        src={userData?.avatar_url}
+        alt={userData?.login}
         style={{
           width: "50px",
           height: "50px",

@@ -36,8 +36,8 @@ const User = () => {
       >
         <h1>GitHub Followers of {username}</h1>
         <img
-          src={userData.avatar_url}
-          alt={userData.login}
+          src={userData?.avatar_url}
+          alt={userData?.login}
           style={{
             width: "50px",
             height: "50px",
